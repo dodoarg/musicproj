@@ -1,3 +1,5 @@
 *.json
 *.cache
 *__pycache__
+
+*pytest.ini

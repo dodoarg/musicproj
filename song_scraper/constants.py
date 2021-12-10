@@ -1,3 +1,11 @@
+WILDCARDS = [
+    '%a%', 'a%', '%a',
+    '%e%', 'e%', '%e',
+    '%i%', 'i%', '%i',
+    '%o%', 'o%', '%o',
+    '%u%', 'u%', '%u'
+]
+
 GENRES = [
     "pop",
     "dance pop",
@@ -4364,4 +4372,12 @@ GENRES = [
     "musica timor leste",
     "classical string trio",
     "yunnan traditional"
+]
+
+ATTRIBUTES = [
+    "album",
+    "artists",
+    "name",
+    "popularity",
+    "preview_url"
 ]
