@@ -33,7 +33,7 @@ def get_validated_results(client):
 
 def get_random_song(client):
     songs = get_validated_results(client)
-    while True:
+    while len(songs) > 0:
         song_idx = random.choice(range(len(songs)))
         random_song = songs[song_idx]
         if all(random_song[attr] for attr in ATTRIBUTES):
