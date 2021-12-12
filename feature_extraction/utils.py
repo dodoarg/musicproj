@@ -55,7 +55,7 @@ def to_csv(songs_data, file_name="data.csv"):
     for i in range(1,21):
         header += f' mfcc_{i}'
     header = header.split()
-    with open(file_name, "w") as file:
+    with open(file_name, "w", encoding='utf-8') as file:
         writer = csv.writer(file)
         writer.writerow(header)
         for i_song,song_data in enumerate(songs_data):
