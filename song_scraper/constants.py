@@ -3,7 +3,7 @@ WILDCARDS = [
     '%e%', 'e%', '%e',
     '%i%', 'i%', '%i',
     '%o%', 'o%', '%o',
-    '%u%', 'u%', '%u'
+    '%u%', 'u%', '%u',
 ]
 
 GENRES = [
@@ -4371,7 +4371,7 @@ GENRES = [
     "trallalero",
     "musica timor leste",
     "classical string trio",
-    "yunnan traditional"
+    "yunnan traditional",
 ]
 
 ATTRIBUTES = [
@@ -4379,5 +4379,20 @@ ATTRIBUTES = [
     "artists",
     "name",
     "popularity",
-    "preview_url"
+    "preview_url",
+]
+
+MUSICALITY_FEATURES = [
+    "acousticness",
+    "danceability",
+    "energy",
+    "instrumentalness",
+    "key",
+    "liveness",
+    "loudness",
+    "mode",
+    "speechiness",
+    "tempo",
+    "time_signature",
+    "valence",
 ]

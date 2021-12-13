@@ -40,6 +40,10 @@ def get_random_song(client):
             return random_song
         songs.remove(songs[song_idx])
 
+def get_musicality_features(client, song_uri):
+        audio_features = client.audio_features(song_uri)
+        return audio_features
+
 def get_song_attributes(song):
     attr_dict = {
         "album": song["album"]["name"],
