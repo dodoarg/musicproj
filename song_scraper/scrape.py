@@ -4,8 +4,11 @@ import sys
 from utils import (
     create_client,
     get_random_song,
-    get_song_attributes
+    get_song_attributes,
+    get_musicality_features
 )
+
+from constants import MUSICALITY_FEATURES
 
 
 def main():
@@ -20,7 +23,8 @@ def main():
         while random_song is None:
             random_song = get_random_song(spotify)
         song_attributes = get_song_attributes(random_song)
-        songs.append(song_attributes)
+        musicality_features = get_musicality_features(spotify, random_song["uri"])[0]
+        songs.append({**song_attributes, **musicality_features})
     with open(path_dest, "w") as file:
         json.dump(songs, file)
 

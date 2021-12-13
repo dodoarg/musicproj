@@ -45,7 +45,7 @@ def test_get_musicality_features():
     musicality_feats = get_musicality_features(client, random_song["uri"])
     assert isinstance(musicality_feats, list)
     assert isinstance(musicality_feats[0], dict)
-    assert all(key in musicality_feats[0].keys() for key in MUSICALITY_FEATURES)
+    assert not set(musicality_feats[0].keys()) - set(MUSICALITY_FEATURES)
 
 def test_get_song_attributes():
     random_song = get_random_song(create_client())

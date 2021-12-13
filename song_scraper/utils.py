@@ -3,7 +3,7 @@ import random
 from spotipy.oauth2 import SpotifyClientCredentials
 from spotipy import Spotify
 
-from constants import WILDCARDS, GENRES, ATTRIBUTES
+from constants import *
 
 def generate_query():
     wildcard = random.choice(WILDCARDS)
@@ -42,7 +42,12 @@ def get_random_song(client):
 
 def get_musicality_features(client, song_uri):
         audio_features = client.audio_features(song_uri)
-        return audio_features
+        return [
+            {feature: song[feature] 
+                for feature in MUSICALITY_FEATURES
+            }
+                for song in audio_features
+        ] 
 
 def get_song_attributes(song):
     attr_dict = {
