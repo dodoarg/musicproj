@@ -4396,3 +4396,15 @@ MUSICALITY_FEATURES = [
     "time_signature",
     "valence",
 ]
+
+AUDIO_FEATURES = [
+    "tempo",
+    "beats_count",
+    "chroma_stft_mean",
+    "root_mean_square_mean", 
+    "spectral_centroid_mean",
+    "spectral_bandwidth_mean",
+    "rolloff_mean",
+    "zero_crossing_rate_mean",
+
+] + [f"mfcc_{i}_mean" for i in range(1,21)]

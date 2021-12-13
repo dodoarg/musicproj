@@ -2,6 +2,8 @@ from utils import *
 from constants import *
 import logging
 
+import numpy as np
+
 LOGGER = logging.getLogger(__name__)
 
 def test_is_query_valid():
@@ -53,3 +55,23 @@ def test_get_song_attributes():
     song_attr = get_song_attributes(random_song)
     assert isinstance(song_attr, dict)
     assert list(song_attr.keys()) == ATTRIBUTES
+
+def test_get_song_sample():
+    random_song = get_random_song(create_client())
+    wav = get_song_sample(random_song["preview_url"])
+    assert isinstance(wav, io.BytesIO)
+
+def test_load_song():
+    random_song = get_random_song(create_client())
+    assert load_song(random_song["preview_url"])
+    y, sr = load_song(random_song["preview_url"])
+    assert isinstance(y, np.ndarray)
+    assert isinstance(sr, int)
+
+def test_extract_features():
+    random_song = get_random_song(create_client())
+    amplitudes, sample_rate = load_song(random_song["preview_url"])
+    assert extract_features(amplitudes, sample_rate)
+    features_dict = extract_features(amplitudes, sample_rate)
+    assert isinstance(features_dict, dict)
+    assert not set(features_dict.keys()) - set(AUDIO_FEATURES)

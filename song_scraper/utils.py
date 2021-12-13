@@ -1,4 +1,10 @@
 import random
+import librosa
+import io
+import pydub
+from urllib.request import urlopen
+
+import numpy as np
 
 from spotipy.oauth2 import SpotifyClientCredentials
 from spotipy import Spotify
@@ -58,3 +64,44 @@ def get_song_attributes(song):
         "preview_url": song["preview_url"]
     }
     return attr_dict
+
+def get_song_sample(song_url):
+    wav = io.BytesIO()
+    with urlopen(song_url) as r:
+        r.seek = lambda *args: None # allows pydub to call seek(0)
+        pydub.AudioSegment.from_file(r).export(wav, "wav")
+    return wav
+
+def load_song(song_url):
+    y, sr = librosa.load(
+        get_song_sample(song_url),
+        mono=True,
+        duration=30)
+    return y, sr
+
+def extract_features(amplitudes, sample_rate):
+    tempo, beats = librosa.beat.beat_track(y=amplitudes, sr=sample_rate)
+    chroma_stft = librosa.feature.chroma_stft(y=amplitudes, sr=sample_rate)
+    rms = librosa.feature.rms(y=amplitudes)
+    spec_cent = librosa.feature.spectral_centroid(y=amplitudes, sr=sample_rate)
+    spec_bw = librosa.feature.spectral_bandwidth(y=amplitudes, sr=sample_rate)
+    rolloff = librosa.feature.spectral_rolloff(y=amplitudes, sr=sample_rate)
+    zcr = librosa.feature.zero_crossing_rate(amplitudes)
+    mfcc = librosa.feature.mfcc(y=amplitudes, sr=sample_rate)
+    features_dict = {
+        "tempo": float(tempo),
+        "beats_count": float(beats.shape[0]),
+        "chroma_stft_mean": float(np.mean(chroma_stft)),
+        "root_mean_square_mean": float(np.mean(rms)),
+        "spectral_centroid_mean": float(np.mean(spec_cent)),
+        "spectral_bandwidth_mean": float(np.mean(spec_bw)),
+        "rolloff_mean": float(np.mean(rolloff)),
+        "zero_crossing_rate_mean": float(np.mean(zcr)),
+    }
+    mfccs = {f'mfcc_{i+1}_mean' : float(np.mean(coef)) for i,coef in enumerate(mfcc)}
+    return {**features_dict, **mfccs}
+
+def get_audio_features(song_url):
+    y, sr = load_song(song_url)
+    audio_features_dict = extract_features(y, sr)
+    return audio_features_dict
