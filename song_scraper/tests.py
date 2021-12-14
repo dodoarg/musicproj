@@ -20,20 +20,26 @@ def test_is_query_valid():
 def test_create_client():
     assert isinstance(create_client(), Spotify)
 
-def test_get_results():
+def test_search_query():
     client = create_client()
     query = generate_query()
-    assert get_results(client, query)
-    results = get_results(client, query)
+    assert search_query(client, query)
+    results = search_query(client, query)
     assert "tracks" in results.keys()
     assert "items" in results["tracks"].keys()
 
 
-def test_get_validated_results():
+def test_get_nonempty_items():
     client = create_client()
     for _ in range(5):
-        assert get_validated_results(client)
+        assert get_nonempty_items(client)
 
+def test_get_validated_random_song_from_items():
+    client = create_client()
+    items = get_nonempty_items(client)
+    assert get_validated_random_song_from_items(items)
+    random_song = get_validated_random_song_from_items(items)
+    assert random_song is None or isinstance(random_song, dict)
 
 def test_get_random_song():
     assert get_random_song(create_client())

@@ -21,7 +21,7 @@ def create_client():
     spotify = Spotify(client_credentials_manager=SpotifyClientCredentials())
     return spotify
 
-def get_results(client, query, offset=None):
+def search_query(client, query, offset=None):
     results = client.search(
         query,
         limit=50,
@@ -30,22 +30,28 @@ def get_results(client, query, offset=None):
     )
     return results
 
-def get_validated_results(client):
+def get_nonempty_items(client):
     results = {"tracks": {"items": []}}
     while not results["tracks"]["items"]:
         query = generate_query()
-        results = get_results(client, query)
+        results = search_query(client, query)
     return results["tracks"]["items"]
 
-def get_random_song(client):
-    songs = get_validated_results(client)
-    while len(songs) > 0:
-        song_idx = random.choice(range(len(songs)))
-        random_song = songs[song_idx]
+def get_validated_random_song_from_items(items):
+    while len(items) > 0:
+        song_idx = random.choice(range(len(items)))
+        random_song = items[song_idx]
         if all(random_song[attr] for attr in ATTRIBUTES):
             if random_song["album"]["release_date"]:
                 return random_song
-        songs.remove(songs[song_idx])
+        items.remove(items[song_idx])
+
+def get_random_song(client):
+    random_song = None
+    while random_song is None:
+        items = get_nonempty_items(client)
+        random_song = get_validated_random_song_from_items(items)
+    return random_song
 
 def get_musicality_features(client, song_uri):
         audio_features = client.audio_features(song_uri)
