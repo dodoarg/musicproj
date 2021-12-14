@@ -43,7 +43,8 @@ def get_random_song(client):
         song_idx = random.choice(range(len(songs)))
         random_song = songs[song_idx]
         if all(random_song[attr] for attr in ATTRIBUTES):
-            return random_song
+            if random_song["album"]["release_date"]:
+                return random_song
         songs.remove(songs[song_idx])
 
 def get_musicality_features(client, song_uri):
@@ -60,6 +61,7 @@ def get_song_attributes(song):
         "album": song["album"]["name"],
         "artists": song["artists"][0]["name"],
         "name": song["name"],
+        "year": song["album"]["release_date"][:4],
         "popularity": song["popularity"],
         "preview_url": song["preview_url"]
     }

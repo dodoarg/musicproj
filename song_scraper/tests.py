@@ -37,6 +37,7 @@ def test_get_random_song():
     assert isinstance(random_song, dict)
     assert all(key in random_song.keys() for key in ATTRIBUTES)
     assert all(bool(random_song[key]) for key in ATTRIBUTES)
+    assert random_song["album"]["release_date"]
 
 def test_get_musicality_features():
     client = create_client()
@@ -54,7 +55,7 @@ def test_get_song_attributes():
     assert get_song_attributes(random_song)
     song_attr = get_song_attributes(random_song)
     assert isinstance(song_attr, dict)
-    assert list(song_attr.keys()) == ATTRIBUTES
+    assert set(song_attr.keys()) == set(ATTRIBUTES + ["year"])
 
 def test_get_song_sample():
     random_song = get_random_song(create_client())
