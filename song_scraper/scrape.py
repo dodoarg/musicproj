@@ -1,5 +1,6 @@
 import json
 import sys
+from argparse import ArgumentParser
 from pathlib import Path
 
 from utils import (
@@ -12,16 +13,22 @@ from utils import (
 
 DATA_PATH = Path('..\data')
 
-def main():
+def parse_args(args):
+    parser = ArgumentParser()
+    parser.add_argument('--n-songs', type=int, help='number of songs to be scraped')
+    parser.add_argument('--file-name', type=str, help='name of json file to contain the data')
+    return parser.parse_args(args)
+
+def main(args):
     spotify = create_client()
-    n_songs = int(sys.argv[1])
-    file_name = sys.argv[2]
-    path_to_file = DATA_PATH / file_name
+    #n_songs = int(sys.argv[1])
+    #file_name = sys.argv[2]
+    path_to_file = DATA_PATH / args.file_name
     if path_to_file.exists():
         songs = json.load(open(path_to_file))
     else:
         songs = []
-    for n in range(n_songs):
+    for n in range(args.n_songs):
         if (n+1) % 50 == 0:
             print(f'scraping {n+1}th song...')
         random_song = None
@@ -36,4 +43,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    args = parse_args(sys.argv[1:])
+    main(args)

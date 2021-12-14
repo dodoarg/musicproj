@@ -1,6 +1,10 @@
 from utils import *
 from constants import *
+from scrape import *
+
 import logging
+import pytest
+import json
 
 import numpy as np
 
@@ -76,3 +80,19 @@ def test_extract_features():
     features_dict = extract_features(amplitudes, sample_rate)
     assert isinstance(features_dict, dict)
     assert not set(features_dict.keys()) - set(AUDIO_FEATURES)
+
+def test_script():
+    test_path = DATA_PATH / 'test.json'
+    test_path.unlink(missing_ok=True)
+    args = ['--n-songs', '2', '--file-name', 'test.json']
+    assert parse_args(args)
+    with pytest.raises(SystemExit):
+        assert parse_args(args + ['--not-expected'])
+    args = parse_args(args)
+    main(args)
+    assert test_path.exists()
+    assert len(json.load(open(test_path))) == 2
+    main(args)
+    assert len(json.load(open(test_path))) == 4
+
+
