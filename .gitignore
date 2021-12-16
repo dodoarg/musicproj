@@ -1,10 +1,32 @@
-*.json
-*.cache
-*__pycache__
+# Byte-compiled / optimized / DLL files
+__pycache__/
+.cache
+*.py[cod]
+*$py.class
 
-*pytest.ini
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
 
-*data_example.csv
-
+# directory that will be moved at some point
 \notebooks
 \data
+
+# stuff that will be taken care of
+song_scraper/*.ini
+song_scraper/*.json
