@@ -2,7 +2,55 @@ package_name: classification_model
 
 training_data_file: train.json
 
-target: is_popular
+target: popularity
 
 pipeline_name: classification_model
 pipeline_save_file: classification_model_ouput_v
+
+features:
+  - acousticness
+  - danceability
+  - energy
+  - instrumentalness
+  #- key
+  - liveness
+  - loudness
+  - mode
+  - speechiness
+  - tempo
+  #- time_signature
+  - valence
+  #- tempo
+  - beats_count
+  - chroma_stft_mean
+  - root_mean_square_mean
+  - spectral_centroid_mean
+  - spectral_bandwidth_mean
+  - rolloff_mean
+  - zero_crossing_rate_mean
+  - mfcc_1_mean
+  - mfcc_2_mean
+  - mfcc_3_mean
+  - mfcc_4_mean
+  - mfcc_5_mean
+  - mfcc_6_mean
+  - mfcc_7_mean
+  - mfcc_8_mean
+  - mfcc_9_mean
+  - mfcc_10_mean
+  - mfcc_11_mean
+  - mfcc_12_mean
+  - mfcc_13_mean
+  - mfcc_14_mean
+  - mfcc_15_mean
+  - mfcc_16_mean
+  - mfcc_17_mean
+  - mfcc_18_mean
+  - mfcc_19_mean
+  - mfcc_20_mean
+
+# set train/test split
+test_size: 0.1
+
+# random seed for reproducibility
+random_state: 0
