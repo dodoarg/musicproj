@@ -1,5 +1,5 @@
-import pandas as pd
 import numpy as np
+import pandas as pd
 
 
 def binarize_popularity(popularity: pd.Series) -> pd.Series:

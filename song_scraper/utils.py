@@ -1,15 +1,13 @@
-import random
-import librosa
 import io
-import pydub
+import random
 from urllib.request import urlopen
 
+import librosa
 import numpy as np
-
-from spotipy.oauth2 import SpotifyClientCredentials
-from spotipy import Spotify
-
+import pydub
 from constants import *
+from spotipy import Spotify
+from spotipy.oauth2 import SpotifyClientCredentials
 
 
 def generate_query():

@@ -3,13 +3,8 @@ import sys
 from argparse import ArgumentParser
 from pathlib import Path
 
-from utils import (
-    create_client,
-    get_random_song,
-    get_song_attributes,
-    get_musicality_features,
-    get_audio_features,
-)
+from utils import (create_client, get_audio_features, get_musicality_features,
+                   get_random_song, get_song_attributes)
 
 DATA_PATH = Path("..\data")
 

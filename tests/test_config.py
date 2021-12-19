@@ -1,15 +1,11 @@
 import pytest
-
 from strictyaml import YAML
 
-from classification_model.config.core import (
-    PACKAGE_ROOT,
-    CONFIG_FILE_PATH,
-    find_config_file,
-    fetch_config_from_yaml,
-    create_and_validate_config,
-    Config,
-)
+from classification_model.config.core import (CONFIG_FILE_PATH, PACKAGE_ROOT,
+                                              Config,
+                                              create_and_validate_config,
+                                              fetch_config_from_yaml,
+                                              find_config_file)
 
 
 def test_find_config_file():

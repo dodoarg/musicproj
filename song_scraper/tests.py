@@ -1,12 +1,11 @@
-from utils import *
-from constants import *
-from scrape import *
-
-import logging
-import pytest
 import json
+import logging
 
 import numpy as np
+import pytest
+from constants import *
+from scrape import *
+from utils import *
 
 LOGGER = logging.getLogger(__name__)
 
