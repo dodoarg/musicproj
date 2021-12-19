@@ -1,7 +1,16 @@
+from typing import List
 from pathlib import Path
-import pandas as pd
 
-from classification_model.config.core import DATASET_DIR
+import joblib
+import pandas as pd
+from sklearn.pipeline import Pipeline
+
+from classification_model import __version__ as _version
+from classification_model.config.core import (
+    DATASET_DIR, 
+    TRAINED_MODEL_DIR,
+    config
+)
 
 def load_dataset(
     *,
@@ -10,3 +19,36 @@ def load_dataset(
 ) -> pd.DataFrame:
     df = pd.read_json(Path(f'{dataset_dir}/{file_name}'))
     return df
+
+def save_pipeline(
+    *,
+    pipeline_to_persist: Pipeline
+) -> None:
+    """Persist the pipeline.
+    Saves the versioned model, and overwrites any previously
+    saved models. This ensures that when the package is published
+    there is only one trained model that can be called and
+    we know exactly how it was built.
+    """
+    
+    # Prepare versioned save file name
+    save_file_name = f'{config.app_config.pipeline_save_file}{_version}.pkl'
+    save_path = TRAINED_MODEL_DIR / save_file_name
+
+    remove_old_pipelines(files_to_keep=[save_file_name])
+    joblib.dump(pipeline_to_persist, save_path)
+
+def remove_old_pipelines(
+    *,
+    files_to_keep: List[str],
+    trained_model_dir: Path = TRAINED_MODEL_DIR
+) -> None:
+    """Removes old model pipelines.
+    This is to ensure there is a simple one-to-one mapping
+    between the package version and the model version
+    to be imported and used by other applications
+    """
+    do_not_delete = files_to_keep + ["__init__.py"]
+    for model_file in trained_model_dir.iterdir():
+        if model_file.name not in do_not_delete:
+            model_file.unlink()

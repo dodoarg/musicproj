@@ -1,7 +1,10 @@
 import pandas as pd
 from pathlib import Path
 
-from classification_model.processing.data_manager import load_dataset
+from classification_model.processing.data_manager import (
+    load_dataset,
+    remove_old_pipelines
+)
 from classification_model.processing.preprocessing import (
     binarize_popularity,
     balance_dataset
@@ -16,6 +19,20 @@ def test_load_dataset():
         dataset_dir=dataset_dir
     )
     assert isinstance(df, pd.DataFrame)
+
+def test_remove_old_pipelines():
+    trained_model_dir = Path("test_files") / "test_train_files"
+    for i in range(3):
+        open(f"{trained_model_dir}/to_delete_{i}", "w")
+    files_to_keep = ["to_keep.txt"]
+    remove_old_pipelines(
+        files_to_keep=files_to_keep,
+        trained_model_dir=trained_model_dir
+    )
+    assert (trained_model_dir / files_to_keep[0]).exists()
+    assert not list(trained_model_dir.glob('to_delete*'))
+
+
 
 def test_binarize_popularity():
     int_series = pd.Series([1, 2, 2, 2, 2, 3, 4, 4, 7, 9, 10])
