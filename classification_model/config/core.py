@@ -19,6 +19,7 @@ class AppConfig(BaseModel):
     """
     package_name: str
     training_data_file: str
+    pipeline_save_file: str
 
 class ModelConfig(BaseModel):
     """
@@ -35,7 +36,7 @@ class ModelConfig(BaseModel):
 class Config(BaseModel):
     """Master config object."""
 
-    app_config = AppConfig
+    app_config: AppConfig
     model_config: ModelConfig
 
 
@@ -68,7 +69,7 @@ def fetch_config_from_yaml(cfg_path: Path = None) -> YAML:
 
 def create_and_validate_config(
     parsed_config: YAML = None
-) -> ModelConfig:
+) -> Config:
     if parsed_config is None:
         parsed_config = fetch_config_from_yaml()
 

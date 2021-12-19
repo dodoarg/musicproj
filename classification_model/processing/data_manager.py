@@ -20,9 +20,12 @@ def load_dataset(
     df = pd.read_json(Path(f'{dataset_dir}/{file_name}'))
     return df
 
+
 def save_pipeline(
     *,
-    pipeline_to_persist: Pipeline
+    pipeline_to_persist: Pipeline,
+    trained_model_dir: Path = TRAINED_MODEL_DIR,
+    save_file_name: str = f'{config.app_config.pipeline_save_file}{_version}.pkl'
 ) -> None:
     """Persist the pipeline.
     Saves the versioned model, and overwrites any previously
@@ -32,10 +35,12 @@ def save_pipeline(
     """
     
     # Prepare versioned save file name
-    save_file_name = f'{config.app_config.pipeline_save_file}{_version}.pkl'
-    save_path = TRAINED_MODEL_DIR / save_file_name
+    save_path = trained_model_dir / save_file_name
 
-    remove_old_pipelines(files_to_keep=[save_file_name])
+    remove_old_pipelines(
+        files_to_keep=[save_file_name],
+        trained_model_dir=trained_model_dir
+    )
     joblib.dump(pipeline_to_persist, save_path)
 
 def remove_old_pipelines(

@@ -1,9 +1,16 @@
+from os import pipe
+from numpy import pi
+from numpy.lib.npyio import save
 import pandas as pd
 from pathlib import Path
 
+from sklearn.pipeline import Pipeline
+from classification_model import pipeline
+
 from classification_model.processing.data_manager import (
     load_dataset,
-    remove_old_pipelines
+    remove_old_pipelines,
+    save_pipeline
 )
 from classification_model.processing.preprocessing import (
     binarize_popularity,
@@ -22,6 +29,7 @@ def test_load_dataset():
 
 def test_remove_old_pipelines():
     trained_model_dir = Path("test_files") / "test_train_files"
+    open(f"{trained_model_dir}/to_keep.txt", "w")
     for i in range(3):
         open(f"{trained_model_dir}/to_delete_{i}", "w")
     files_to_keep = ["to_keep.txt"]
@@ -31,6 +39,18 @@ def test_remove_old_pipelines():
     )
     assert (trained_model_dir / files_to_keep[0]).exists()
     assert not list(trained_model_dir.glob('to_delete*'))
+
+def test_save_pipeline():
+    trained_model_dir = Path("test_files") / "test_train_files"
+    pipeline_to_persist = Pipeline([('dum', 'passthrough')])
+    save_file_name = "test_persisted_pipeline.pkl"
+    save_pipeline(
+        pipeline_to_persist=pipeline_to_persist,
+        trained_model_dir=trained_model_dir,
+        save_file_name=save_file_name
+    )
+    assert (trained_model_dir / save_file_name).exists()
+    (trained_model_dir / save_file_name).unlink()
 
 
 
