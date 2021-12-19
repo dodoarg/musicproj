@@ -10,15 +10,19 @@ import numpy as np
 
 LOGGER = logging.getLogger(__name__)
 
+
 def test_is_query_valid():
     possible_queries = [
-        "{} genre:\"{}\"".format(wildcard, genre)
-        for wildcard in WILDCARDS for genre in GENRES
+        '{} genre:"{}"'.format(wildcard, genre)
+        for wildcard in WILDCARDS
+        for genre in GENRES
     ]
     assert generate_query() in possible_queries
 
+
 def test_create_client():
     assert isinstance(create_client(), Spotify)
+
 
 def test_search_query():
     client = create_client()
@@ -34,12 +38,14 @@ def test_get_nonempty_items():
     for _ in range(5):
         assert get_nonempty_items(client)
 
+
 def test_get_validated_random_song_from_items():
     client = create_client()
     items = get_nonempty_items(client)
     assert get_validated_random_song_from_items(items)
     random_song = get_validated_random_song_from_items(items)
     assert random_song is None or isinstance(random_song, dict)
+
 
 def test_get_random_song():
     assert get_random_song(create_client())
@@ -48,6 +54,7 @@ def test_get_random_song():
     assert all(key in random_song.keys() for key in ATTRIBUTES)
     assert all(bool(random_song[key]) for key in ATTRIBUTES)
     assert random_song["album"]["release_date"]
+
 
 def test_get_musicality_features():
     client = create_client()
@@ -60,6 +67,7 @@ def test_get_musicality_features():
     assert isinstance(musicality_feats[0], dict)
     assert not set(musicality_feats[0].keys()) - set(MUSICALITY_FEATURES)
 
+
 def test_get_song_attributes():
     random_song = get_random_song(create_client())
     assert get_song_attributes(random_song)
@@ -67,10 +75,12 @@ def test_get_song_attributes():
     assert isinstance(song_attr, dict)
     assert set(song_attr.keys()) == set(ATTRIBUTES + ["year"])
 
+
 def test_get_song_sample():
     random_song = get_random_song(create_client())
     wav = get_song_sample(random_song["preview_url"])
     assert isinstance(wav, io.BytesIO)
+
 
 def test_load_song():
     random_song = get_random_song(create_client())
@@ -78,6 +88,7 @@ def test_load_song():
     y, sr = load_song(random_song["preview_url"])
     assert isinstance(y, np.ndarray)
     assert isinstance(sr, int)
+
 
 def test_extract_features():
     random_song = get_random_song(create_client())
@@ -87,18 +98,17 @@ def test_extract_features():
     assert isinstance(features_dict, dict)
     assert not set(features_dict.keys()) - set(AUDIO_FEATURES)
 
+
 def test_script():
-    test_path = DATA_PATH / 'test.json'
+    test_path = DATA_PATH / "test.json"
     test_path.unlink(missing_ok=True)
-    args = ['--n-songs', '2', '--file-name', 'test.json']
+    args = ["--n-songs", "2", "--file-name", "test.json"]
     assert parse_args(args)
     with pytest.raises(SystemExit):
-        assert parse_args(args + ['--not-expected'])
+        assert parse_args(args + ["--not-expected"])
     args = parse_args(args)
     main(args)
     assert test_path.exists()
     assert len(json.load(open(test_path))) == 2
     main(args)
     assert len(json.load(open(test_path))) == 4
-
-

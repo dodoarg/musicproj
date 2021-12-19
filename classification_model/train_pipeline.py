@@ -2,12 +2,10 @@ from config.core import config
 
 from pipeline import popularity_pipe
 from processing.data_manager import load_dataset
-from processing.preprocessing import (
-    binarize_popularity,
-    balance_dataset
-)
+from processing.preprocessing import binarize_popularity, balance_dataset
 
 from sklearn.model_selection import train_test_split
+
 
 def run_traning() -> None:
     """Train the model."""
@@ -37,6 +35,7 @@ def run_traning() -> None:
 
     # persist trained model
     save_pipeline(pipeline_to_persist=popularity_pipe)
+
 
 if __name__ == "__main__":
     run_training()

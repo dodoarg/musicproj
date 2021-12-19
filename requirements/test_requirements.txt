@@ -2,3 +2,4 @@
 
 # testing requirements
 pytest>=6.2.5
+black==20.8b1

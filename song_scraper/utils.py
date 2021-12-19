@@ -11,24 +11,28 @@ from spotipy import Spotify
 
 from constants import *
 
+
 def generate_query():
     wildcard = random.choice(WILDCARDS)
     genre = random.choice(GENRES)
-    q = "{} genre:\"{}\"".format(wildcard, genre)
+    q = '{} genre:"{}"'.format(wildcard, genre)
     return q
+
 
 def create_client():
     spotify = Spotify(client_credentials_manager=SpotifyClientCredentials())
     return spotify
 
+
 def search_query(client, query, offset=None):
     results = client.search(
         query,
         limit=50,
-        offset=random.randrange(1,500) if offset is None else offset,
-        type='track'
+        offset=random.randrange(1, 500) if offset is None else offset,
+        type="track",
     )
     return results
+
 
 def get_nonempty_items(client):
     results = {"tracks": {"items": []}}
@@ -36,6 +40,7 @@ def get_nonempty_items(client):
         query = generate_query()
         results = search_query(client, query)
     return results["tracks"]["items"]
+
 
 def get_validated_random_song_from_items(items):
     while len(items) > 0:
@@ -46,6 +51,7 @@ def get_validated_random_song_from_items(items):
                 return random_song
         items.remove(items[song_idx])
 
+
 def get_random_song(client):
     random_song = None
     while random_song is None:
@@ -53,14 +59,14 @@ def get_random_song(client):
         random_song = get_validated_random_song_from_items(items)
     return random_song
 
+
 def get_musicality_features(client, song_uri):
-        audio_features = client.audio_features(song_uri)
-        return [
-            {feature: song[feature] 
-                for feature in MUSICALITY_FEATURES
-            }
-                for song in audio_features
-        ] 
+    audio_features = client.audio_features(song_uri)
+    return [
+        {feature: song[feature] for feature in MUSICALITY_FEATURES}
+        for song in audio_features
+    ]
+
 
 def get_song_attributes(song):
     attr_dict = {
@@ -69,23 +75,23 @@ def get_song_attributes(song):
         "name": song["name"],
         "year": song["album"]["release_date"][:4],
         "popularity": song["popularity"],
-        "preview_url": song["preview_url"]
+        "preview_url": song["preview_url"],
     }
     return attr_dict
+
 
 def get_song_sample(song_url):
     wav = io.BytesIO()
     with urlopen(song_url) as r:
-        r.seek = lambda *args: None # allows pydub to call seek(0)
+        r.seek = lambda *args: None  # allows pydub to call seek(0)
         pydub.AudioSegment.from_file(r).export(wav, "wav")
     return wav
 
+
 def load_song(song_url):
-    y, sr = librosa.load(
-        get_song_sample(song_url),
-        mono=True,
-        duration=30)
+    y, sr = librosa.load(get_song_sample(song_url), mono=True, duration=30)
     return y, sr
+
 
 def extract_features(amplitudes, sample_rate):
     tempo, beats = librosa.beat.beat_track(y=amplitudes, sr=sample_rate)
@@ -106,8 +112,9 @@ def extract_features(amplitudes, sample_rate):
         "rolloff_mean": float(np.mean(rolloff)),
         "zero_crossing_rate_mean": float(np.mean(zcr)),
     }
-    mfccs = {f'mfcc_{i+1}_mean' : float(np.mean(coef)) for i,coef in enumerate(mfcc)}
+    mfccs = {f"mfcc_{i+1}_mean": float(np.mean(coef)) for i, coef in enumerate(mfcc)}
     return {**features_dict, **mfccs}
+
 
 def get_audio_features(song_url):
     y, sr = load_song(song_url)

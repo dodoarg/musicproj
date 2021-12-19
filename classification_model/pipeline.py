@@ -7,10 +7,13 @@ from feature_engine.encoding import DecisionTreeEncoder
 from classification_model.config.core import config
 
 
-popularity_pipe = Pipeline([
-    ('dt encoder', DecisionTreeEncoder(
-        variables=config.model_config.categorical_features
-    )),
-    ('scaler', StandardScaler()),
-    ('classifier', GradientBoostingClassifier()),
-])
+popularity_pipe = Pipeline(
+    [
+        (
+            "dt encoder",
+            DecisionTreeEncoder(variables=config.model_config.categorical_features),
+        ),
+        ("scaler", StandardScaler()),
+        ("classifier", GradientBoostingClassifier()),
+    ]
+)
