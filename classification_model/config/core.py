@@ -45,7 +45,9 @@ class Config(BaseModel):
     model_config: ModelConfig
 
 
-def find_config_file(cfg_path=CONFIG_FILE_PATH) -> Path:
+def find_config_file(
+    cfg_path: Path = CONFIG_FILE_PATH
+) -> Path:
     """Locate the configuration file"""
     if cfg_path.is_file():
         return cfg_path

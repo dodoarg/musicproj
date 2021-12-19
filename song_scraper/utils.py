@@ -1,5 +1,6 @@
 import io
 import random
+from typing import List
 from urllib.request import urlopen
 
 import librosa
@@ -36,13 +37,13 @@ def search_query(client, query, offset=None):
     )
     return results
 
-
 def get_nonempty_items(client):
-    results = {"tracks": {"items": []}}
-    while not results["tracks"]["items"]:
+    while True:
         query = generate_query()
         results = search_query(client, query)
-    return results["tracks"]["items"]
+        items = results["tracks"]["items"]
+        if items:
+            return items
 
 
 def get_validated_random_song_from_items(items):
