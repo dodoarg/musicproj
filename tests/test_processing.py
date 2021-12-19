@@ -23,7 +23,7 @@ def test_balance_data():
         "var1": "s o m e t h i n g ! !".split(),
         "is_popular": [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1]
     })
-    balanced_df = balance_dataset(toy_df)
+    balanced_df = balance_dataset(toy_df, "is_popular")
     pd.testing.assert_series_equal(
         balanced_df.is_popular.value_counts(),
         pd.Series([3,3], index=[0,1], name="is_popular")

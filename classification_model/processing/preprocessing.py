@@ -9,10 +9,13 @@ def binarize_popularity(popularity: pd.Series) -> pd.Series:
     )
     return is_popular
 
-def balance_dataset(data: pd.DataFrame) -> pd.DataFrame:
-    n_popular = data.is_popular.sum()
+def balance_dataset(
+        data: pd.DataFrame,
+        target_bin: str
+    ) -> pd.DataFrame:
+    n_popular = data[target_bin].sum()
     ind_to_drop = np.random.choice(
-        data[data.is_popular==0].index,
+        data[data[target_bin]==0].index,
         data.shape[0] - 2*n_popular,
         replace=False
     )
