@@ -9,9 +9,7 @@ popularity_pipe = Pipeline(
     [
         (
             "dt encoder",
-            DecisionTreeEncoder(
-                variables=config.model_config.categorical_features
-            ),
+            DecisionTreeEncoder(variables=config.model_config.categorical_features),
         ),
         ("scaler", StandardScaler()),
         ("classifier", GradientBoostingClassifier()),
