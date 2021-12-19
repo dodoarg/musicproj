@@ -1,4 +1,5 @@
 import pandas as pd
+from pathlib import Path
 
 from classification_model.processing.data_manager import load_dataset
 from classification_model.processing.preprocessing import (
@@ -6,8 +7,14 @@ from classification_model.processing.preprocessing import (
     balance_dataset
 )
 
-def test_load_datasets():
-    df = load_dataset(file_name="train.json")
+def test_load_dataset():
+    file_name = "test_ds_to_load.json"
+    dataset_dir = Path("test_files")
+    print(Path(f'{dataset_dir}/{file_name}'))
+    df = load_dataset(
+        file_name=file_name,
+        dataset_dir=dataset_dir
+    )
     assert isinstance(df, pd.DataFrame)
 
 def test_binarize_popularity():
