@@ -15,17 +15,17 @@ from classification_model.config.core import (
 def load_dataset(
     *,
     file_name: str,
-    dataset_dir: Path = DATASET_DIR
+    _dataset_dir: Path = DATASET_DIR
 ) -> pd.DataFrame:
-    df = pd.read_json(Path(f'{dataset_dir}/{file_name}'))
+    df = pd.read_json(Path(f'{_dataset_dir}/{file_name}'))
     return df
 
 
 def save_pipeline(
     *,
     pipeline_to_persist: Pipeline,
-    trained_model_dir: Path = TRAINED_MODEL_DIR,
-    save_file_name: str = f'{config.app_config.pipeline_save_file}{_version}.pkl'
+    _trained_model_dir: Path = TRAINED_MODEL_DIR,
+    _save_file_name: str = f'{config.app_config.pipeline_save_file}{_version}.pkl'
 ) -> None:
     """Persist the pipeline.
     Saves the versioned model, and overwrites any previously
@@ -35,18 +35,18 @@ def save_pipeline(
     """
     
     # Prepare versioned save file name
-    save_path = trained_model_dir / save_file_name
+    save_path = _trained_model_dir / _save_file_name
 
     remove_old_pipelines(
-        files_to_keep=[save_file_name],
-        trained_model_dir=trained_model_dir
+        files_to_keep=[_save_file_name],
+        _trained_model_dir=_trained_model_dir
     )
     joblib.dump(pipeline_to_persist, save_path)
 
 def remove_old_pipelines(
     *,
     files_to_keep: List[str],
-    trained_model_dir: Path = TRAINED_MODEL_DIR
+    _trained_model_dir: Path = TRAINED_MODEL_DIR
 ) -> None:
     """Removes old model pipelines.
     This is to ensure there is a simple one-to-one mapping
@@ -54,6 +54,6 @@ def remove_old_pipelines(
     to be imported and used by other applications
     """
     do_not_delete = files_to_keep + ["__init__.py"]
-    for model_file in trained_model_dir.iterdir():
+    for model_file in _trained_model_dir.iterdir():
         if model_file.name not in do_not_delete:
             model_file.unlink()

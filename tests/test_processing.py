@@ -23,7 +23,7 @@ def test_load_dataset():
     print(Path(f'{dataset_dir}/{file_name}'))
     df = load_dataset(
         file_name=file_name,
-        dataset_dir=dataset_dir
+        _dataset_dir=dataset_dir
     )
     assert isinstance(df, pd.DataFrame)
 
@@ -35,7 +35,7 @@ def test_remove_old_pipelines():
     files_to_keep = ["to_keep.txt"]
     remove_old_pipelines(
         files_to_keep=files_to_keep,
-        trained_model_dir=trained_model_dir
+        _trained_model_dir=trained_model_dir
     )
     assert (trained_model_dir / files_to_keep[0]).exists()
     assert not list(trained_model_dir.glob('to_delete*'))
@@ -46,8 +46,8 @@ def test_save_pipeline():
     save_file_name = "test_persisted_pipeline.pkl"
     save_pipeline(
         pipeline_to_persist=pipeline_to_persist,
-        trained_model_dir=trained_model_dir,
-        save_file_name=save_file_name
+        _trained_model_dir=trained_model_dir,
+        _save_file_name=save_file_name
     )
     assert (trained_model_dir / save_file_name).exists()
     (trained_model_dir / save_file_name).unlink()
