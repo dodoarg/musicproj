@@ -1,11 +1,39 @@
+import io
 import json
 import logging
 
 import numpy as np
 import pytest
-from constants import *
-from scrape import *
-from utils import *
+
+from spotipy import Spotify
+
+from constants import (
+    ATTRIBUTES,
+    AUDIO_FEATURES,
+    MUSICALITY_FEATURES,
+    GENRES,
+    WILDCARDS
+)
+
+from scrape import (
+    main,
+    parse_args,
+    DATA_PATH
+)
+
+from song_scraper.utils import (
+    get_song_attributes,
+    generate_query,
+    extract_features,
+    load_song,
+    create_client,
+    get_random_song,
+    get_song_sample,
+    get_musicality_features,
+    get_validated_random_song_from_items,
+    get_nonempty_items,
+    search_query
+)
 
 LOGGER = logging.getLogger(__name__)
 

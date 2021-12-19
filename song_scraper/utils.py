@@ -5,7 +5,12 @@ from urllib.request import urlopen
 import librosa
 import numpy as np
 import pydub
-from constants import *
+from constants import (
+    WILDCARDS,
+    GENRES,
+    ATTRIBUTES,
+    MUSICALITY_FEATURES
+)
 from spotipy import Spotify
 from spotipy.oauth2 import SpotifyClientCredentials
 
@@ -61,7 +66,10 @@ def get_random_song(client):
 def get_musicality_features(client, song_uri):
     audio_features = client.audio_features(song_uri)
     return [
-        {feature: song[feature] for feature in MUSICALITY_FEATURES}
+        {
+            feature: song[feature]
+            for feature in MUSICALITY_FEATURES
+        }
         for song in audio_features
     ]
 
@@ -110,7 +118,10 @@ def extract_features(amplitudes, sample_rate):
         "rolloff_mean": float(np.mean(rolloff)),
         "zero_crossing_rate_mean": float(np.mean(zcr)),
     }
-    mfccs = {f"mfcc_{i+1}_mean": float(np.mean(coef)) for i, coef in enumerate(mfcc)}
+    mfccs = {
+        f"mfcc_{i+1}_mean": float(np.mean(coef))
+        for i, coef in enumerate(mfcc)
+    }
     return {**features_dict, **mfccs}
 
 

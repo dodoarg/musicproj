@@ -12,16 +12,17 @@ from classification_model.processing.preprocessing import (balance_dataset,
 
 TESTS_PATH = ROOT / "tests"
 
+
 def test_load_dataset():
     file_name = "test_ds_to_load.json"
-    dataset_dir = (TESTS_PATH / "test_files").resolve()
+    dataset_dir = (TESTS_PATH / "test_files")
     print(Path(f"{dataset_dir}/{file_name}"))
     df = load_dataset(file_name=file_name, _dataset_dir=dataset_dir)
     assert isinstance(df, pd.DataFrame)
 
 
 def test_remove_old_pipelines():
-    trained_model_dir = (TESTS_PATH / "test_files" / "test_train_files").resolve()
+    trained_model_dir = (TESTS_PATH / "test_files" / "test_train_files")
     open(f"{trained_model_dir}/to_keep.txt", "w")
     for i in range(3):
         open(f"{trained_model_dir}/to_delete_{i}", "w")
@@ -34,7 +35,7 @@ def test_remove_old_pipelines():
 
 
 def test_save_pipeline():
-    trained_model_dir = (TESTS_PATH / "test_files" / "test_train_files").resolve()
+    trained_model_dir = (TESTS_PATH / "test_files" / "test_train_files")
     pipeline_to_persist = Pipeline([("dum", "passthrough")])
     save_file_name = "test_persisted_pipeline.pkl"
     save_pipeline(
@@ -47,9 +48,16 @@ def test_save_pipeline():
 
 
 def test_binarize_popularity():
-    int_series = pd.Series([1, 2, 2, 2, 2, 3, 4, 4, 7, 9, 10])
-    binarized_series = pd.Series([0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1])
-    pd.testing.assert_series_equal(binarize_popularity(int_series), binarized_series)
+    int_series = pd.Series(
+        [1, 2, 2, 2, 2, 3, 4, 4, 7, 9, 10]
+    )
+    binarized_series = pd.Series(
+        [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1]
+    )
+    pd.testing.assert_series_equal(
+        binarize_popularity(int_series),
+        binarized_series
+    )
 
 
 def test_balance_data():

@@ -4,7 +4,7 @@ from setuptools import find_packages, setup
 
 # Package meta-data
 NAME = "hit-song-science"
-DESCRIPTION = "Classify song as popular or unpopular based off musical features only"
+DESCRIPTION = "Classify song as popular or unpopular based on musical features"
 AUTHOR = "dodoarg"
 REQUIRES_PYTHON = ">=3.9.0"
 
@@ -29,9 +29,12 @@ setup(
     description=DESCRIPTION,
     author=AUTHOR,
     python_requires=REQUIRES_PYTHON,
-    packages=find_packages(
-        exclude=("tests", "song_scraper", "feature_extraction", "notebooks", "data")
-    ),
+    packages=find_packages(exclude=(
+        "tests",
+        "song_scraper",
+        "notebooks",
+        "data"
+    )),
     package_data={"classification_model": ["VERSION"]},
     install_requires=list_reqs(),
     include_package_data=True,
