@@ -17,7 +17,7 @@ class ModelConfig(BaseModel):
     features: List[str]
     test_size: float
     random_state: int
-    categorical_vars: Sequence[str]
+    categorical_features: Sequence[str]
 
 
 def find_config_file(
@@ -52,5 +52,8 @@ def create_and_validate_config(
 ) -> ModelConfig:
     if parsed_config is None:
         parsed_config = fetch_config_from_yaml()
+
+    _config = ModelConfig(**parsed_config.data)
+    return _config
 
 config = create_and_validate_config()

@@ -1,4 +1,5 @@
 import pytest
+from sklearn.utils.validation import check_is_fitted
 
 from strictyaml import YAML
 
@@ -6,7 +7,9 @@ from classification_model.config.core import (
     PACKAGE_ROOT,
     CONFIG_FILE_PATH,
     find_config_file,
-    fetch_config_from_yaml
+    fetch_config_from_yaml,
+    create_and_validate_config,
+    ModelConfig
 )
 
 def test_find_config_file():
@@ -21,3 +24,6 @@ def test_fetch_config_from_yaml():
     with pytest.raises(OSError):
         fetch_config_from_yaml(cfg_path=fake_path)
     assert isinstance(fetch_config_from_yaml(), YAML)
+
+def test_create_and_validate_config():
+    assert isinstance(create_and_validate_config(), ModelConfig)
