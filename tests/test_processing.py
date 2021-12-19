@@ -1,33 +1,27 @@
-from os import pipe
-from numpy import pi
-from numpy.lib.npyio import save
-import pandas as pd
 from pathlib import Path
 
+import pandas as pd
 from sklearn.pipeline import Pipeline
-from classification_model import pipeline
 
-from classification_model.processing.data_manager import (
-    load_dataset,
-    remove_old_pipelines,
-    save_pipeline,
-)
-from classification_model.processing.preprocessing import (
-    binarize_popularity,
-    balance_dataset,
-)
+from classification_model.config.core import ROOT
+from classification_model.processing.data_manager import (load_dataset,
+                                                          remove_old_pipelines,
+                                                          save_pipeline)
+from classification_model.processing.preprocessing import (balance_dataset,
+                                                           binarize_popularity)
 
+TESTS_PATH = ROOT / "tests"
 
 def test_load_dataset():
     file_name = "test_ds_to_load.json"
-    dataset_dir = Path("test_files")
+    dataset_dir = (TESTS_PATH / "test_files").resolve()
     print(Path(f"{dataset_dir}/{file_name}"))
     df = load_dataset(file_name=file_name, _dataset_dir=dataset_dir)
     assert isinstance(df, pd.DataFrame)
 
 
 def test_remove_old_pipelines():
-    trained_model_dir = Path("test_files") / "test_train_files"
+    trained_model_dir = (TESTS_PATH / "test_files" / "test_train_files").resolve()
     open(f"{trained_model_dir}/to_keep.txt", "w")
     for i in range(3):
         open(f"{trained_model_dir}/to_delete_{i}", "w")
@@ -40,7 +34,7 @@ def test_remove_old_pipelines():
 
 
 def test_save_pipeline():
-    trained_model_dir = Path("test_files") / "test_train_files"
+    trained_model_dir = (TESTS_PATH / "test_files" / "test_train_files").resolve()
     pipeline_to_persist = Pipeline([("dum", "passthrough")])
     save_file_name = "test_persisted_pipeline.pkl"
     save_pipeline(
