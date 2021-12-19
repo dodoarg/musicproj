@@ -12,12 +12,29 @@ ROOT = PACKAGE_ROOT.parent
 CONFIG_FILE_PATH = PACKAGE_ROOT / "config.yml"
 DATASET_DIR = PACKAGE_ROOT / "datasets"
 
+class AppConfig(BaseModel):
+    """
+    Application-level config.
+    """
+    package_name: str
+    training_data_file: str
+
 class ModelConfig(BaseModel):
+    """
+    All configuration relevant to model
+    training and feature engineering
+    """
     target: str
     features: List[str]
     test_size: float
     random_state: int
     categorical_features: Sequence[str]
+
+class Config(BaseModel):
+    """Master config object."""
+
+    app_config = AppConfig
+    model_config: ModelConfig
 
 
 def find_config_file(
@@ -53,7 +70,10 @@ def create_and_validate_config(
     if parsed_config is None:
         parsed_config = fetch_config_from_yaml()
 
-    _config = ModelConfig(**parsed_config.data)
+    _config = Config(
+        app_config=AppConfig(**parsed_config.data),
+        model_config=ModelConfig(**parsed_config.data)
+    )
     return _config
 
 config = create_and_validate_config()
