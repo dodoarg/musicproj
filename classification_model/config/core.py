@@ -32,7 +32,7 @@ class ModelConfig(BaseModel):
 
     target_int: str
     target_bin: str
-    features: List[str]
+    features: Sequence[str]
     test_size: float
     random_state: int
     categorical_features: Sequence[str]
