@@ -20,6 +20,11 @@ def run_training() -> None:
 
     data.drop([config.model_config.target_int], axis=1, inplace=True)
 
+    # cast categorical vars as object (maybe should do this in the data_manager?)
+    data[config.model_config.categorical_features] = data[
+        config.model_config.categorical_features
+    ].astype("O")
+
     # divide train and test
     X_train, X_test, y_train, y_test = train_test_split(
         data[config.model_config.features],

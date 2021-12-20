@@ -23,6 +23,9 @@ wheels/
 *.egg
 MANIFEST
 
+# trained models (will be create in CI)
+classification_model/trained_models/
+
 # directory that will be moved at some point
 \notebooks
 \data
