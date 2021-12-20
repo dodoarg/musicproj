@@ -21,7 +21,6 @@ features:
   - tempo
   - time_signature
   - valence
-  - tempo
   - beats_count
   - chroma_stft_mean
   - root_mean_square_mean
