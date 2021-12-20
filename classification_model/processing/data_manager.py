@@ -37,6 +37,17 @@ def save_pipeline(
     joblib.dump(pipeline_to_persist, save_path)
 
 
+def load_pipeline(
+    *,
+    file_name: str,
+    _trained_model_dir: Path = TRAINED_MODEL_DIR
+) -> Pipeline:
+    """Load a persisted pipeline"""
+    
+    file_path = _trained_model_dir / file_name
+    trained_model = joblib.load(filename=file_path)
+    return trained_model
+
 def remove_old_pipelines(
     *, files_to_keep: List[str], _trained_model_dir: Path = TRAINED_MODEL_DIR
 ) -> None:
