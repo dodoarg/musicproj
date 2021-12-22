@@ -1,7 +1,7 @@
 from typing import List, Optional, Sequence, Tuple
 
 import pandas as pd
-from pydantic import BaseModel, StrictFloat, StrictStr, ValidationError
+from pydantic import BaseModel, StrictFloat, StrictInt, ValidationError
 
 from classification_model.config.core import config
 
@@ -49,15 +49,15 @@ class SongsDataInputSchema(BaseModel):
     danceability: Optional[StrictFloat]
     energy: Optional[StrictFloat]
     instrumentalness: Optional[StrictFloat]
-    key: Optional[StrictStr]
+    key: Optional[StrictInt]
     liveness: Optional[StrictFloat]
     loudness: Optional[StrictFloat]
-    mode: Optional[StrictStr]
+    mode: Optional[StrictInt]
     speechineess: Optional[StrictFloat]
     tempo: Optional[StrictFloat]
-    time_signature: Optional[StrictStr]
+    time_signature: Optional[StrictInt]
     valence: Optional[StrictFloat]
-    beats_count: Optional[StrictFloat]
+    beats_count: Optional[StrictInt]
     chroma_stft_mean: Optional[StrictFloat]
     root_mean_square: Optional[StrictFloat]
     spectral_centroid_mean: Optional[StrictFloat]

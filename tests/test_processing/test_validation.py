@@ -31,7 +31,7 @@ def test_validate_inputs():
         {
             "instrumentalness": [0.24, 0.11, -2.34],
             "energy": ["not_a_float", 1.24, 93.23],
-            "key": ["key_0", 1, "key_2"],
+            "key": [10, 3, "not_an_int"],
         }
     )
     exp_error_energy = {
@@ -40,9 +40,9 @@ def test_validate_inputs():
         "type": "type_error.float",
     }
     exp_error_key = {
-        "loc": ("inputs", 1, "key"),
-        "msg": "str type expected",
-        "type": "type_error.str",
+        "loc": ("inputs", 2, "key"),
+        "msg": "value is not a valid integer",
+        "type": "type_error.integer",
     }
     exp_error = [exp_error_energy, exp_error_key]
     validated_df, errors = validate_inputs(
