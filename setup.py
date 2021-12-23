@@ -3,7 +3,7 @@ from pathlib import Path
 from setuptools import find_packages, setup
 
 # Package meta-data
-NAME = "hit-song-science"
+NAME = "dodoarg-hit-song-science"
 DESCRIPTION = "Classify song as popular or unpopular based on musical features"
 AUTHOR = "dodoarg"
 REQUIRES_PYTHON = ">=3.9.0"
