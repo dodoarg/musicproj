@@ -2,9 +2,9 @@ from typing import Any
 
 from fastapi import FastAPI, APIRouter, Request
 from fastapi.responses import HTMLResponse
-from app.config import settings
 
-from http.server import HTTPServer
+from app.api import api_router
+from app.config import settings
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -29,6 +29,7 @@ def index(request: Request) -> Any:
 
     return HTMLResponse(content=body)
 
+app.include_router(api_router, prefix=settings.API_V1_STR)
 app.include_router(root_router)
 
 if __name__ == "__main__":
