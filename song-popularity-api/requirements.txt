@@ -3,4 +3,4 @@
 fastapi>=0.64.0,<1.0.0
 pydantic>=1.8.1,<1.9.0
 uvicorn>=0.11.3,<0.12.0
-dodoarg-hit-song-science==0.0.4
+dodoarg-hit-song-science==0.0.5
