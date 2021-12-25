@@ -23,6 +23,13 @@ wheels/
 *.egg
 MANIFEST
 
+# testing
+.pytest_cache/
+.tox/
+
+# mypy
+.mypy_cache/
+
 # trained models (will be create in CI)
 classification_model/trained_models/
 
