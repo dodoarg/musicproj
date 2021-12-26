@@ -1,6 +1,9 @@
-from typing import Generator
-
 import pytest
+
+import logging
+from _pytest.logging import caplog as _caplog
+from loguru import logger
+
 from fastapi.testclient import TestClient
 
 from app.config import settings
@@ -66,3 +69,14 @@ def input_sample():
             }
         ]
     }
+
+
+@pytest.fixture
+def caplog(_caplog):
+    class PropagateHandler(logging.Handler):
+        def emit(self, record):
+            logging.getLogger(record.name).handle(record)
+
+    handler_id = logger.add(PropagateHandler(), format="{message} {extra}")
+    yield _caplog
+    logger.remove(handler_id)

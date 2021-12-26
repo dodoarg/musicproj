@@ -1,4 +1,9 @@
+import logging
 from pydantic import BaseSettings
+
+
+class LoggingSettings(BaseSettings):
+    LOGGING_LEVEL: int = logging.INFO
 
 
 class Settings(BaseSettings):
@@ -8,6 +13,8 @@ class Settings(BaseSettings):
 
     HOST: str = "localhost"
     PORT: int = 8001
+
+    logging: LoggingSettings = LoggingSettings()
 
 
 settings = Settings()

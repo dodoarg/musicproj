@@ -1,4 +1,5 @@
 from typing import Any
+from loguru import logger
 
 from fastapi import APIRouter, FastAPI, Request
 from fastapi.responses import HTMLResponse
@@ -35,7 +36,7 @@ app.include_router(root_router)
 
 if __name__ == "__main__":
     # use this for debugging purposes only
-
+    logger.warning("Running in dev mode. Meant to be debugging.")
     import uvicorn
 
     uvicorn.run(app, host=settings.HOST, port=settings.PORT)

@@ -1,4 +1,5 @@
 from copy import deepcopy
+from loguru import logger
 import pytest
 
 from classification_model import __version__ as model_version
@@ -40,10 +41,12 @@ def test_predict_raises_error_422(client, base_url, input_sample):
     assert response.status_code == 422
 
 
-def test_predict_response_200(client, base_url, input_sample):
+def test_predict_response_200(client, base_url, input_sample, caplog):
     payload = deepcopy(input_sample)
     url = f"{base_url}/predict"
     response = client.post(url, json=payload)
+    assert "Making predictions on inputs: " in caplog.records[0].message
+    assert "Prediction results" in caplog.records[1].message
     assert response.status_code == 200
     prediction_data = response.json()
     assert prediction_data["errors"] is None
