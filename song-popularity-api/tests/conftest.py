@@ -3,6 +3,7 @@ from typing import Generator
 import pytest
 from fastapi.testclient import TestClient
 
+from app.config import settings
 from app.main import app
 
 
@@ -10,6 +11,12 @@ from app.main import app
 def client():
     with TestClient(app) as _client:
         yield _client
+
+
+@pytest.fixture(scope="module")
+def base_url():
+    url = f"https://{settings.HOST}:{settings.PORT}{settings.API_V1_STR}"
+    return url
 
 
 @pytest.fixture(scope="module")

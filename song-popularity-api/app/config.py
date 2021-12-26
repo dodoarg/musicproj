@@ -6,5 +6,8 @@ class Settings(BaseSettings):
 
     PROJECT_NAME: str = "Song Popularity Prediction API"
 
+    HOST: str = "localhost"
+    PORT: int = 8001
+
 
 settings = Settings()
