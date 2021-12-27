@@ -25,7 +25,24 @@ jobs:
           command: |
             tox
 
+  deploy_app:
+    <<: *defaults
+    steps:
+      - checkout:
+          path: ~/project
+      - run:
+          name: deploy to heroku
+          command: |
+            git subtree push --prefix song-popularity-api https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
+
 workflows:
   app:
     jobs:
       - test_app
+      - deploy_app:
+          requires:
+            - test_app
+          filters:
+            branches:
+              only:
+                - master
