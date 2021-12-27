@@ -1,4 +1,4 @@
-from typing import Any, List, Optional, Sequence, Union
+from typing import Any, List, Optional
 
 from classification_model.processing.validation import SongsDataInputSchema
 from pydantic import BaseModel

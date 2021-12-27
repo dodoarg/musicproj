@@ -1,8 +1,8 @@
 from typing import Any
-from loguru import logger
 
 from fastapi import APIRouter, FastAPI, Request
 from fastapi.responses import HTMLResponse
+from loguru import logger
 
 from app.api import api_router
 from app.config import settings, setup_app_logging

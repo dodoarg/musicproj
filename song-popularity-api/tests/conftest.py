@@ -1,10 +1,9 @@
-import pytest
-
 import logging
-from _pytest.logging import caplog as _caplog
-from loguru import logger
 
+import pytest
+from _pytest.logging import caplog as _caplog
 from fastapi.testclient import TestClient
+from loguru import logger
 
 from app.config import settings
 from app.main import app
