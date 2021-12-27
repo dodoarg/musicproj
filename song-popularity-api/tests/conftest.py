@@ -1,7 +1,7 @@
 import logging
 
 import pytest
-from _pytest.logging import caplog as _caplog
+from _pytest.logging import caplog as _caplog  # noqa: F401
 from fastapi.testclient import TestClient
 from loguru import logger
 
@@ -71,7 +71,7 @@ def input_sample():
 
 
 @pytest.fixture
-def caplog(_caplog):
+def caplog(_caplog):  # noqa: F811
     class PropagateHandler(logging.Handler):
         def emit(self, record):
             record.from_loguru = True
