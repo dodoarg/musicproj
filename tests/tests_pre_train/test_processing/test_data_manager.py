@@ -11,7 +11,7 @@ from classification_model.processing.data_manager import (
     save_pipeline,
 )
 
-TESTS_PATH = ROOT / "tests"
+TESTS_PATH = ROOT / "tests" / "tests_pre_train"
 
 
 def test_load_dataset():
