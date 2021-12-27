@@ -31,7 +31,7 @@ MANIFEST
 .mypy_cache/
 
 # trained models (will be create in CI)
-classification_model/trained_models/
+classification_model/trained_models/*.pkl
 
 # directory that will be moved at some point
 \notebooks
