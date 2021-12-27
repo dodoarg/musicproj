@@ -1,6 +1,5 @@
-from copy import deepcopy
-from loguru import logger
 import pytest
+from copy import deepcopy
 
 from classification_model import __version__ as model_version
 

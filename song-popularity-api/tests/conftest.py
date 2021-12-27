@@ -75,6 +75,7 @@ def input_sample():
 def caplog(_caplog):
     class PropagateHandler(logging.Handler):
         def emit(self, record):
+            record.from_loguru = True
             logging.getLogger(record.name).handle(record)
 
     handler_id = logger.add(PropagateHandler(), format="{message} {extra}")
