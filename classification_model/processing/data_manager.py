@@ -6,8 +6,7 @@ import pandas as pd
 from sklearn.pipeline import Pipeline
 
 from classification_model import __version__ as _version
-from classification_model.config.core import (DATASET_DIR, TRAINED_MODEL_DIR,
-                                              config)
+from classification_model.config.core import DATASET_DIR, TRAINED_MODEL_DIR, config
 
 
 def load_dataset(*, file_name: str, _dataset_dir: Path = DATASET_DIR) -> pd.DataFrame:

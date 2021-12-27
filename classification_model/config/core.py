@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import List, Sequence
+from typing import Sequence
 
 from pydantic import BaseModel
 from strictyaml import YAML, load

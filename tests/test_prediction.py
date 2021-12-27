@@ -2,6 +2,7 @@ import numpy as np
 
 from classification_model.predict import make_prediction
 
+
 def test_make_prediction(sample_input_data):
     # one row contains a missing value
     expected_no_predictions = 499

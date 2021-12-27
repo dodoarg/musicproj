@@ -6,9 +6,9 @@ from sklearn.pipeline import Pipeline
 from classification_model.config.core import ROOT
 from classification_model.processing.data_manager import (
     load_dataset,
+    load_pipeline,
     remove_old_pipelines,
     save_pipeline,
-    load_pipeline
 )
 
 TESTS_PATH = ROOT / "tests"
@@ -46,13 +46,12 @@ def test_save_and_load_pipeline():
         _save_file_name=save_file_name,
     )
     assert (trained_model_dir / save_file_name).exists()
-    
+
     # load the pipeline
     loaded_pipeline = load_pipeline(
-        file_name=save_file_name,
-        _trained_model_dir=trained_model_dir
+        file_name=save_file_name, _trained_model_dir=trained_model_dir
     )
     assert isinstance(loaded_pipeline, Pipeline)
-    
+
     # delete the pipeline
     (trained_model_dir / save_file_name).unlink()
