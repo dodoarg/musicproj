@@ -35,6 +35,27 @@ jobs:
           command: |
             git subtree push --prefix song-popularity-api https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
 
+  deploy_app_container:
+    <<: *defaults
+    steps:
+      - setup_remote_docker:
+          version: 20.10.6
+      - checkout:
+          path: ~/project
+      - run:
+          name: build image
+          command: |
+            sudo curl https://cli-assets.heroku.com/install.sh | sh
+            make build-ml-api-heroku
+      - run:
+          name: push image to heroku
+          command: |
+            make push-ml-api-heroku
+      - run:
+          name: release to heroku
+          command: |
+            make release-heroku
+
   publish_model:
     <<: *defaults
     working_directory: ~/project/classification_model
@@ -75,3 +96,11 @@ workflows:
                 - master
       - publish_model:
           <<: *tags_only
+      - deploy_app_container:
+          requires:
+            - deploy_app
+          filters:
+            branches:
+              only:
+                - master
+
