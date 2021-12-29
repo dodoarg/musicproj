@@ -1,7 +1,9 @@
+"""This script should only be run in CI"""
+
+
 from pathlib import Path
 
 import pandas as pd
-
 from classification_model.config.core import PACKAGE_ROOT
 from classification_model.predict import make_prediction
 from classification_model.processing.data_manager import load_dataset
@@ -20,3 +22,7 @@ def capture_predictions(
 
     predictions_df = pd.DataFrame(make_prediction(input_data=multiple_test_input))
     predictions_df.to_csv(f"{_save_path}/{_save_file}")
+
+
+if __name__ == "__main__":
+    capture_predictions()
