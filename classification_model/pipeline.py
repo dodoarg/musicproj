@@ -1,8 +1,9 @@
-from classification_model.config.core import config
 from feature_engine.encoding import DecisionTreeEncoder
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
+
+from classification_model.config.core import config
 
 popularity_pipe = Pipeline(
     [
