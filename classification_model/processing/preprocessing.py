@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from classification_model.config.core import config
 
 
 def binarize_popularity(popularity: pd.Series) -> pd.Series:
@@ -11,7 +12,10 @@ def binarize_popularity(popularity: pd.Series) -> pd.Series:
 
 def balance_dataset(data: pd.DataFrame, target_bin: str) -> pd.DataFrame:
     n_popular = data[target_bin].sum()
+    np.random.seed(config.model_config.random_state)
     ind_to_drop = np.random.choice(
-        data[data[target_bin] == 0].index, data.shape[0] - 2 * n_popular, replace=False
+        data[data[target_bin] == 0].index,
+        data.shape[0] - 2 * n_popular,
+        replace=False,
     )
     return data.drop(ind_to_drop)
