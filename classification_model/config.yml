@@ -2,6 +2,7 @@ package_name: classification_model
 
 training_data_file: train.json
 test_data_file: test.json
+test_data_predictions: test_data_predictions.csv
 
 target_int: popularity
 target_bin: is_popular

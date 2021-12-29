@@ -4,14 +4,15 @@
 from pathlib import Path
 
 import pandas as pd
-from classification_model.config.core import PACKAGE_ROOT
+
+from classification_model.config.core import PACKAGE_ROOT, config
 from classification_model.predict import make_prediction
 from classification_model.processing.data_manager import load_dataset
 
 
 def capture_predictions(
-    _file_name: str = "test.json",
-    _save_file: str = "test_data_predictions.csv",
+    _file_name: str = config.app_config.test_data_file,
+    _save_file: str = config.app_config.test_data_predictions,
     _save_path: Path = PACKAGE_ROOT,
 ) -> None:
     """Save test data predictions to a csv"""
