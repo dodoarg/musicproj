@@ -32,9 +32,14 @@ jobs:
           path: ~/project
       - *prepare_tox
       - run:
+          name: capturing previous model predictions
+          command: |
+            tox -e differential_past
+      - run:
           name: running differential tests
           command: |
-            tox -e differential
+            tox -e differential_present
+
 
   test_app:
     <<: *defaults

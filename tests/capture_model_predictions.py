@@ -1,6 +1,7 @@
 """This script should only be run in CI"""
 
 
+import sys
 from pathlib import Path
 
 import pandas as pd
@@ -26,4 +27,4 @@ def capture_predictions(
 
 
 if __name__ == "__main__":
-    capture_predictions()
+    capture_predictions(_save_path=sys.argv[1])

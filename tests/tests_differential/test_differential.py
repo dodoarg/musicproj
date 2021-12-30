@@ -1,5 +1,4 @@
 import pandas as pd
-import pytest
 from sklearn.metrics import mean_squared_error as mse
 
 from classification_model.config.core import PACKAGE_ROOT, config
@@ -7,7 +6,6 @@ from classification_model.predict import make_prediction
 from classification_model.processing.data_manager import load_dataset
 
 
-@pytest.mark.differential
 def test_model_prediction_differential():
     """
     This test compares predictions across two
