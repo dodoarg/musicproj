@@ -10,7 +10,7 @@ from classification_model.processing.preprocessing import (
 )
 
 
-def train_pipeline_on_training_data() -> Pipeline:
+def train_pipeline_on_training_data(_return_test_set: bool = False) -> Pipeline:
     """Train the model, return fitted pipeline"""
 
     # read training data
@@ -40,5 +40,8 @@ def train_pipeline_on_training_data() -> Pipeline:
 
     # fit model
     popularity_pipe.fit(X_train, y_train)
+
+    if _return_test_set:
+        return popularity_pipe, X_test, y_test
 
     return popularity_pipe
