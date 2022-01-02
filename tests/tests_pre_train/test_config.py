@@ -15,16 +15,20 @@ def test_find_config_file(tmpdir):
         find_config_file(cfg_path=config_dir)
 
     config_path = config_dir / "test_file.txt"
-    config_path.write_text("this_is_a_test")
+    config_path.write_text("this is a test")
     config_path_retrieved = find_config_file(cfg_path=config_path)
     assert config_path_retrieved == config_path
 
 
-def test_fetch_config_from_yaml():
-    fake_path = PACKAGE_ROOT / "does not exist"
+def test_fetch_config_from_yaml(tmpdir):
+    config_dir = Path(tmpdir)
+    config_path = config_dir / "sample_config.txt"
     with pytest.raises(OSError):
-        fetch_config_from_yaml(cfg_path=fake_path)
-    assert isinstance(fetch_config_from_yaml(), YAML)
+        fetch_config_from_yaml(cfg_path=config_path)
+    
+    config_path.write_text("this is a test")
+    parsed_config = fetch_config_from_yaml(cfg_path=config_path)
+    assert isinstance(parsed_config, YAML)
 
 
 def test_create_and_validate_config():
