@@ -95,6 +95,7 @@ def _get_parsed_config(config_path, config_text):
         (INVALID_ENTRY_TEST_CONFIG_TEXT, ["test_size must be at least 0.1"]),
         (MISTYPED_ENTRY_TEST_CONFIG_TEXT, ["test_size", "not a valid float"]),
     ],
+    ids = ["missing_entry", "invalid_entry", "mistyped_entry"]
 )
 def test_create_and_validate_config_raises_validation_error(
     tmp_config_path, invalid_config_text, error_strings
