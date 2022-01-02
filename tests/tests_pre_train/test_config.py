@@ -1,22 +1,23 @@
+from pathlib import Path
+
 import pytest
+from classification_model.config.core import (CONFIG_FILE_PATH, PACKAGE_ROOT,
+                                              Config,
+                                              create_and_validate_config,
+                                              fetch_config_from_yaml,
+                                              find_config_file)
 from strictyaml import YAML
 
-from classification_model.config.core import (
-    CONFIG_FILE_PATH,
-    PACKAGE_ROOT,
-    Config,
-    create_and_validate_config,
-    fetch_config_from_yaml,
-    find_config_file,
-)
 
-
-def test_find_config_file():
-    fake_path = PACKAGE_ROOT / "not_a_config_file"
+def test_find_config_file(tmpdir):
+    config_dir = Path(tmpdir)
     with pytest.raises(Exception):
-        find_config_file(cfg_path=fake_path)
-    real_path = CONFIG_FILE_PATH
-    assert find_config_file() == real_path
+        find_config_file(cfg_path=config_dir)
+
+    config_path = config_dir / "test_file.txt"
+    config_path.write_text("this_is_a_test")
+    config_path_retrieved = find_config_file(cfg_path=config_path)
+    assert config_path_retrieved == config_path
 
 
 def test_fetch_config_from_yaml():
