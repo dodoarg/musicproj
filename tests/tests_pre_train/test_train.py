@@ -3,8 +3,6 @@ from sklearn.exceptions import NotFittedError
 from sklearn.metrics import accuracy_score
 from sklearn.pipeline import Pipeline
 
-from classification_model.training import train_pipeline_on_training_data
-
 
 def try_predict(pipeline, X):
     try:
@@ -13,10 +11,8 @@ def try_predict(pipeline, X):
         return e
 
 
-def test_training():
-    fitted_pipeline, X_test, y_test = train_pipeline_on_training_data(
-        _return_test_set=True
-    )
+def test_training(fitted_pipeline_and_split_dataset):
+    fitted_pipeline, X_test, y_test = fitted_pipeline_and_split_dataset
     assert isinstance(fitted_pipeline, Pipeline)
     assert not isinstance(try_predict(fitted_pipeline, X_test), NotFittedError)
 
