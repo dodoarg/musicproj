@@ -1,4 +1,6 @@
+from pathlib import Path
 import pytest
+
 from classification_model.config.core import config
 from classification_model.processing.data_manager import load_dataset
 from classification_model.training import train_pipeline_on_training_data
@@ -15,3 +17,10 @@ def fitted_pipeline_and_split_dataset():
         _return_test_set=True
     )
     return fitted_pipeline, X_test, y_test
+
+
+@pytest.fixture()
+def tmp_config_path(tmpdir):
+    config_dir = Path(tmpdir)
+    config_path = config_dir / "sample_config.yml"
+    return config_path
