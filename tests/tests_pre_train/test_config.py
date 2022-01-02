@@ -51,6 +51,14 @@ test_size: not_a_float
 random_state: 0
 """
 
+VALID_TEST_CONFIG_TEXT = f"""
+{TEST_CONFIG_TEXT_BEG}
+
+test_size: 0.1
+
+random_state: 0
+"""
+
 
 def test_find_config_file(tmpdir):
     config_dir = Path(tmpdir)
@@ -82,15 +90,25 @@ def _get_parsed_config(config_path, config_text):
 
 @pytest.mark.parametrize(
     "invalid_config_text, error_strings",
-    [(MISSING_ENTRY_TEST_CONFIG_TEXT, ["field required", "random_state"]),
-     (INVALID_ENTRY_TEST_CONFIG_TEXT, ["test_size must be at least 0.1"]),
-     (MISTYPED_ENTRY_TEST_CONFIG_TEXT, ["test_size", "not a valid float"])]
+    [
+        (MISSING_ENTRY_TEST_CONFIG_TEXT, ["field required", "random_state"]),
+        (INVALID_ENTRY_TEST_CONFIG_TEXT, ["test_size must be at least 0.1"]),
+        (MISTYPED_ENTRY_TEST_CONFIG_TEXT, ["test_size", "not a valid float"]),
+    ],
 )
-def test_create_and_validate_config(tmp_config_path, invalid_config_text, error_strings):
+def test_create_and_validate_config_raises_validation_error(
+    tmp_config_path, invalid_config_text, error_strings
+):
     parsed_config = _get_parsed_config(tmp_config_path, invalid_config_text)
     with pytest.raises(ValidationError) as excinfo:
         create_and_validate_config(parsed_config=parsed_config)
     error_msg = str(excinfo.value)
     assert all(err in error_msg for err in error_strings)
 
-    assert isinstance(create_and_validate_config(), Config)
+
+def test_create_and_validate_config(tmp_config_path):
+    parsed_config = _get_parsed_config(tmp_config_path, VALID_TEST_CONFIG_TEXT)
+    config = create_and_validate_config(parsed_config=parsed_config)
+    assert isinstance(config, Config)
+    assert config.app_config
+    assert config.model_config
