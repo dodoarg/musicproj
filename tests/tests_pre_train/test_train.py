@@ -1,9 +1,10 @@
 import numpy as np
+from pandas.api.types import is_object_dtype as is_object
 from sklearn.exceptions import NotFittedError
 from sklearn.metrics import accuracy_score
 from sklearn.pipeline import Pipeline
 
-from classification_model.training import train_pipeline_on_training_data
+from classification_model.config.core import config
 
 
 def try_predict(pipeline, X):
@@ -13,10 +14,24 @@ def try_predict(pipeline, X):
         return e
 
 
-def test_training():
-    fitted_pipeline, X_test, y_test = train_pipeline_on_training_data(
-        _return_test_set=True
+def test_pre_training(fitted_pipeline_and_split_dataset):
+    model_config = config.model_config
+    _, X_test, y_test = fitted_pipeline_and_split_dataset
+
+    assert not any(
+        target in X_test.columns
+        for target in (model_config.target_int, model_config.target_bin)
     )
+    assert all(
+        is_object(X_test[categorical])
+        for categorical in model_config.categorical_features
+    )
+    assert not y_test[y_test != 0][y_test != 1].count()
+
+
+def test_benchmark(fitted_pipeline_and_split_dataset):
+    fitted_pipeline, X_test, y_test = fitted_pipeline_and_split_dataset
+
     assert isinstance(fitted_pipeline, Pipeline)
     assert not isinstance(try_predict(fitted_pipeline, X_test), NotFittedError)
 

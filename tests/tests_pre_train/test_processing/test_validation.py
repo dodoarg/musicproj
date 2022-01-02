@@ -4,7 +4,7 @@ import pandas as pd
 from classification_model.processing.validation import validate_inputs
 
 
-def test_validate_inputs():
+def test_validate_toy_inputs_data():
     df = pd.DataFrame(
         {
             "var1": [0, 1, 2, 3, 4],
@@ -52,3 +52,32 @@ def test_validate_inputs():
     )
     pd.testing.assert_frame_equal(validated_df, df_not_valid)
     assert errors == exp_error
+
+
+def test_validate_real_input_data(sample_input_data):
+    input_data = sample_input_data.copy()
+
+    validated_data, errors = validate_inputs(input_data=input_data)
+
+    # one row contains missing data
+    assert len(sample_input_data) == 500
+    assert len(validated_data) == 499
+    assert errors is None
+
+    # introduce errors
+    input_data["root_mean_square_mean"] = input_data["root_mean_square_mean"].astype(
+        "O"
+    )
+    input_data.at[47, "root_mean_square_mean"] = "not_a_number"
+    validated_data, errors = validate_inputs(input_data=input_data)
+    exp_errors = [
+        {
+            "loc": ("inputs", 46, "root_mean_square_mean"),
+            "msg": "value is not a valid float",
+            "type": "type_error.float",
+        }
+    ]
+
+    # we expect rms_mean to be floats
+    assert errors is not None
+    assert errors == exp_errors

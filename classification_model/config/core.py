@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import Sequence
 
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
 from strictyaml import YAML, load
 
 import classification_model
@@ -38,6 +38,20 @@ class ModelConfig(BaseModel):
     test_size: float
     random_state: int
     categorical_features: Sequence[str]
+
+    @validator("test_size")
+    def allowed_test_size(cls, value):
+        """
+        Just a proof of concept on how to use this decorator.
+        Test size cannot be too small. Which is incidentally reasonable
+        """
+        min_test_size = 0.1
+
+        if value >= min_test_size:
+            return value
+        raise ValueError(
+            f"test_size must be at least {min_test_size}, " f"got {value} instead."
+        )
 
 
 class Config(BaseModel):
