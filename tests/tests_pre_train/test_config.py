@@ -1,12 +1,15 @@
 from pathlib import Path
 
 import pytest
-from classification_model.config.core import (Config,
-                                              create_and_validate_config,
-                                              fetch_config_from_yaml,
-                                              find_config_file)
 from pydantic import ValidationError
 from strictyaml import YAML
+
+from classification_model.config.core import (
+    Config,
+    create_and_validate_config,
+    fetch_config_from_yaml,
+    find_config_file,
+)
 
 TEST_CONFIG_TEXT_BEG = """
 package_name: classification_model
@@ -95,7 +98,7 @@ def _get_parsed_config(config_path, config_text):
         (INVALID_ENTRY_TEST_CONFIG_TEXT, ["test_size must be at least 0.1"]),
         (MISTYPED_ENTRY_TEST_CONFIG_TEXT, ["test_size", "not a valid float"]),
     ],
-    ids = ["missing_entry", "invalid_entry", "mistyped_entry"]
+    ids=["missing_entry", "invalid_entry", "mistyped_entry"],
 )
 def test_create_and_validate_config_raises_validation_error(
     tmp_config_path, invalid_config_text, error_strings

@@ -50,8 +50,7 @@ class ModelConfig(BaseModel):
         if value >= min_test_size:
             return value
         raise ValueError(
-            f"test_size must be at least {min_test_size}, "
-            f"got {value} instead."
+            f"test_size must be at least {min_test_size}, " f"got {value} instead."
         )
 
 

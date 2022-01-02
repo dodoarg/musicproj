@@ -1,9 +1,10 @@
 import numpy as np
-from classification_model.config.core import config
 from pandas.api.types import is_object_dtype as is_object
 from sklearn.exceptions import NotFittedError
 from sklearn.metrics import accuracy_score
 from sklearn.pipeline import Pipeline
+
+from classification_model.config.core import config
 
 
 def try_predict(pipeline, X):
