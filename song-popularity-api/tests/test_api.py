@@ -1,10 +1,9 @@
 from copy import deepcopy
 
 import pytest
-from classification_model import __version__ as model_version
-
 from app import __version__ as _api_version
 from app.config import settings
+from classification_model import __version__ as model_version
 
 
 def test_health(client, base_url):
@@ -50,4 +49,4 @@ def test_predict_response_200(client, base_url, input_sample, caplog):
     prediction_data = response.json()
     assert prediction_data["errors"] is None
     assert prediction_data["version"] == model_version
-    assert prediction_data["predictions"] == [1]
+    assert len(prediction_data["predictions"]) == 499
