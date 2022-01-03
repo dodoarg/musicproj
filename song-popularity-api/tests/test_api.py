@@ -25,18 +25,18 @@ def test_health(client, base_url):
         "http//localhost:8001/api/v1/not_a_valid_endpoint",
     ],
 )
-def test_predict_error_404(client, invalid_urls):
+def test_predict_raises_error_404(client, invalid_urls):
     response = client.post(invalid_urls)
     assert response.status_code == 404
 
 
-def test_predict_raises_error_422(client, base_url, input_sample):
+def test_predict_raises_error_400(client, base_url, input_sample):
     payload = deepcopy(input_sample)
-    payload["inputs"][0]["key"] = "not_an_int"
+    payload["inputs"][1]["danceability"] = "not_a_number"
 
     url = f"{base_url}/predict"
     response = client.post(url, json=payload)
-    assert response.status_code == 422
+    assert response.status_code == 400
 
 
 def test_predict_response_200(client, base_url, input_sample, caplog):
