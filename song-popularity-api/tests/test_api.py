@@ -39,6 +39,19 @@ def test_predict_raises_error_400(client, base_url, input_sample):
     assert response.status_code == 400
 
 
+def test_predict_raises_error_422(client, base_url, input_sample):
+    url = f"{base_url}/predict"
+    payload = deepcopy(input_sample)
+
+    payload = payload["inputs"]
+    response = client.post(url, json=payload)
+    assert response.status_code == 422
+
+    payload = {"inputs": payload[0]}
+    response = client.post(url, json=payload)
+    assert response.status_code == 422
+
+
 def test_predict_response_200(client, base_url, input_sample, caplog):
     payload = deepcopy(input_sample)
     url = f"{base_url}/predict"
