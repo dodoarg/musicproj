@@ -24,6 +24,7 @@ def test_health(client, base_url):
         "http//localhost:8001/api/v10/health",
         "http//localhost:8001/api/v1/not_a_valid_endpoint",
     ],
+    ids=["wrong port", "wrong version", "invalid endpoint"],
 )
 def test_predict_raises_error_404(client, invalid_urls):
     response = client.post(invalid_urls)
