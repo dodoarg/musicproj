@@ -3,12 +3,13 @@ import logging
 import numpy as np
 import pytest
 from _pytest.logging import caplog as _caplog  # noqa: F401
-from app.config import settings
-from app.main import app
 from classification_model.config.core import config
 from classification_model.processing.data_manager import load_dataset
 from fastapi.testclient import TestClient
 from loguru import logger
+
+from app.config import settings
+from app.main import app
 
 
 @pytest.fixture(scope="module")
