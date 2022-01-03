@@ -1,4 +1,3 @@
-import json
 from typing import Any
 
 import numpy as np
@@ -27,18 +26,16 @@ def health() -> dict:
 
 
 @api_router.post("/predict", response_model=schemas.PredictionResults, status_code=200)
-async def predict(input_data: schemas.MultipleSongsDataInputs) -> Any:
+async def predict(input_data: schemas.UnValidatedInputs) -> Any:
     """Make popularity predictions with the dodoarg-hit-song-science model"""
 
     input_df = pd.DataFrame(jsonable_encoder(input_data.inputs))
-    logger.info(f"Making predictions on inputs: {input_data.inputs}")
-    results = make_prediction(input_data=input_df.replace({np.nan: None}))
+    logger.info("Making predictions on inputs...")
+    results = make_prediction(input_data=input_df)
 
-    # I can't think of a case where error 422 is not raised as a result of input_data
-    # not matching the schema before make_predictions is even called
     if results["errors"] is not None:
         logger.warning(f"Prediction validation error: {results.get('errors')}")
-        raise HTTPException(status_code=400, detail=json.loads(results["errors"]))
+        raise HTTPException(status_code=400, detail=results.get("errors"))
     if isinstance(results["predictions"], np.ndarray):
         results["predictions"] = results["predictions"].tolist()
 
