@@ -1,9 +1,10 @@
 from copy import deepcopy
 
 import pytest
+from classification_model import __version__ as model_version
+
 from app import __version__ as _api_version
 from app.config import settings
-from classification_model import __version__ as model_version
 
 
 def test_health(client, base_url):
