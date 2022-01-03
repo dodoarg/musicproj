@@ -1,12 +1,14 @@
 import logging
 
+import numpy as np
 import pytest
 from _pytest.logging import caplog as _caplog  # noqa: F401
-from fastapi.testclient import TestClient
-from loguru import logger
-
 from app.config import settings
 from app.main import app
+from classification_model.config.core import config
+from classification_model.processing.data_manager import load_dataset
+from fastapi.testclient import TestClient
+from loguru import logger
 
 
 @pytest.fixture(scope="module")
@@ -21,53 +23,11 @@ def base_url():
     return url
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture()
 def input_sample():
-    return {
-        "inputs": [
-            {
-                "acousticness": 5.0,
-                "danceability": 18.2,
-                "energy": 23.4,
-                "instrumentalness": 76.2,
-                "key": 8,
-                "liveness": 9.56,
-                "loudness": 0.3,
-                "mode": 1,
-                "speechiness": 13.3,
-                "tempo": 4.5,
-                "time_signature": 3,
-                "valence": 55.1,
-                "beats_count": 20,
-                "chroma_stft_mean": 3.3,
-                "root_mean_square_mean": 3.3,
-                "spectral_centroid_mean": 3.3,
-                "spectral_bandwidth_mean": 3.3,
-                "rolloff_mean": 3.3,
-                "zero_crossing_rate_mean": 3.3,
-                "mfcc_1_mean": 3.3,
-                "mfcc_2_mean": 3.3,
-                "mfcc_3_mean": 3.3,
-                "mfcc_4_mean": 3.3,
-                "mfcc_5_mean": 3.3,
-                "mfcc_6_mean": 3.3,
-                "mfcc_7_mean": 3.3,
-                "mfcc_8_mean": 3.3,
-                "mfcc_9_mean": 3.3,
-                "mfcc_10_mean": 3.3,
-                "mfcc_11_mean": 3.3,
-                "mfcc_12_mean": 3.3,
-                "mfcc_13_mean": 3.3,
-                "mfcc_14_mean": 3.3,
-                "mfcc_15_mean": 3.3,
-                "mfcc_16_mean": 3.3,
-                "mfcc_17_mean": 3.3,
-                "mfcc_18_mean": 3.3,
-                "mfcc_19_mean": 3.3,
-                "mfcc_20_mean": 3.3,
-            }
-        ]
-    }
+    df = load_dataset(file_name=config.app_config.test_data_file)
+    input_data = {"inputs": df.replace({np.nan: None}).to_dict(orient="records")}
+    return input_data
 
 
 @pytest.fixture
