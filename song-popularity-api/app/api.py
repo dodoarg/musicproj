@@ -30,7 +30,7 @@ async def predict(input_data: schemas.UnValidatedInputs) -> Any:
     """Make popularity predictions with the dodoarg-hit-song-science model"""
 
     input_df = pd.DataFrame(jsonable_encoder(input_data.inputs))
-    logger.info(f"Making predictions on inputs: {input_data.inputs}")
+    logger.info("Making predictions on inputs...")
     results = make_prediction(input_data=input_df)
 
     if results["errors"] is not None:
