@@ -26,7 +26,7 @@ def health() -> dict:
 
 
 @api_router.post("/predict", response_model=schemas.PredictionResults, status_code=200)
-async def predict(input_data: schemas.UnValidatedInputs) -> Any:
+async def predict(input_data: schemas.MultipleSongsDataInputs) -> Any:
     """Make popularity predictions with the dodoarg-hit-song-science model"""
 
     input_df = pd.DataFrame(jsonable_encoder(input_data.inputs))

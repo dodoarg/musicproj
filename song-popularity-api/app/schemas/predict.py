@@ -10,10 +10,6 @@ class PredictionResults(BaseModel):
     predictions: Optional[List[int]]
 
 
-class UnValidatedInputs(BaseModel):
-    inputs: List[dict]
-
-
 class MultipleSongsDataInputs(BaseModel):
     inputs: List[SongsDataInputSchema]
 
