@@ -33,34 +33,20 @@ def test_predict_raises_error_404(client, invalid_urls):
 
 
 @pytest.mark.parametrize(
-    "field, value, index, error",
+    "field, value, index",
     [
-        ("danceability", "not_a_number", 1, "not a valid float"),
-        ("root_mean_square_mean", "invalid", 77, "not a valid float"),
+        ("danceability", "not_a_number", 1),
+        ("root_mean_square_mean", "invalid", 77),
     ],
     ids=["feature 1", "feature 2"],
 )
-def test_predict_raises_error_400(
-    client, base_url, input_sample, caplog, field, value, index, error
+def test_predict_raises_error_422(
+    client, base_url, input_sample, field, value, index
 ):
     payload = deepcopy(input_sample)
     payload["inputs"][index][field] = value
 
     url = f"{base_url}/predict"
-    response = client.post(url, json=payload)
-    assert response.status_code == 400
-    assert error in caplog.records[1].message
-
-
-def test_predict_raises_error_422(client, base_url, input_sample):
-    url = f"{base_url}/predict"
-    payload = deepcopy(input_sample)
-
-    payload = payload["inputs"]
-    response = client.post(url, json=payload)
-    assert response.status_code == 422
-
-    payload = {"inputs": payload[0]}
     response = client.post(url, json=payload)
     assert response.status_code == 422
 
